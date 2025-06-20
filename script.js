@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (storedData) {
                 tradeData = JSON.parse(storedData);
             } else {
-                // 初回デモデータ (2025年6月, 7月)
+                // localStorageにデータがない場合、デモデータを初期表示用としてロードするが、
+                // 自動的にlocalStorageには保存しないように変更しました。
+                // これにより、「全ての履歴をクリア」後にリロードしてもデモデータは復活しません。
                 tradeData = {
                     "2025-06-15": [{ time: "10:30", pair: "USDJPY", type: "Buy", profit: 200 }],
                     "2025-06-16": [{ time: "14:00", pair: "USDJPY", type: "Sell", profit: -50 }],
@@ -82,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     "2025-07-19": [{ time: "09:00", pair: "USDJPY", type: "Buy", profit: 400, imageUrl: "https://via.placeholder.com/600x300/17a2b8/FFFFFF?text=Trade+Chart+3" }],
                 };
-                saveTradeData();
+                // ★以前ここに saveTradeData() がありましたが、削除されました★
             }
         } catch (e) {
             console.error("localStorageからのデータ読み込みエラー:", e);
@@ -326,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 typeIndicator.textContent = trade.type;
                 tradeItem.appendChild(typeIndicator);
 
-                // ★ここから変更★ 銘柄情報と画像ボタンをまとめる
+                // 銘柄情報と画像ボタンをまとめる
                 const pairInfoWrapper = document.createElement('div');
                 pairInfoWrapper.classList.add('pair-info-wrapper');
 
@@ -339,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pairText = document.createElement('span');
                 pairText.textContent = trade.pair;
                 pairInfo.appendChild(pairText);
-                pairInfoWrapper.appendChild(pairInfo); // ラッパーに追加
+                pairInfoWrapper.appendChild(pairInfo);
 
                 if (trade.imageUrl) {
                     const imageButton = document.createElement('button');
@@ -349,16 +351,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         e.stopPropagation();
                         showImageModal(trade.imageUrl);
                     });
-                    pairInfoWrapper.appendChild(imageButton); // ラッパーに追加
+                    pairInfoWrapper.appendChild(imageButton);
                 } else {
                     const imageButtonPlaceholder = document.createElement('button');
                     imageButtonPlaceholder.classList.add('image-button');
                     imageButtonPlaceholder.textContent = '画像なし';
                     imageButtonPlaceholder.disabled = true;
-                    pairInfoWrapper.appendChild(imageButtonPlaceholder); // ラッパーに追加
+                    pairInfoWrapper.appendChild(imageButtonPlaceholder);
                 }
-                tradeItem.appendChild(pairInfoWrapper); // トレードアイテムにラッパーを追加
-                // ★ここまで変更★
+                tradeItem.appendChild(pairInfoWrapper);
 
                 // 時間表示
                 const tradeDateTime = document.createElement('span');
@@ -377,9 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     profitDisplay.textContent = `-¥${Math.abs(trade.profit).toFixed(0)}`;
                 }
                 tradeItem.appendChild(profitDisplay);
-                
-                // 画像を直接トレードアイテムに表示するロジックは削除
-                // if (trade.imageUrl) { /* 削除 */ }
 
                 tradeListDisplay.appendChild(tradeItem);
             });
