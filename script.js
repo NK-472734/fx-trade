@@ -27,6 +27,7 @@ const clearAllDataButton = document.getElementById('clearAllData');
 const tradeDetailsModal = document.getElementById('tradeDetailsModal');
 const closeDetailsModalButton = document.getElementById('closeDetailsModalButton');
 const modalDateHeader = document.getElementById('modalDateHeader');
+const modalTotalPL = document.getElementById('modalTotalPL'); // モーダル内の合計損益表示要素
 const tradeListContainer = document.getElementById('tradeList');
 
 const imageDisplayModal = document.getElementById('imageDisplayModal');
@@ -99,7 +100,7 @@ signOutButton.addEventListener('click', async () => {
         await auth.signOut();
     } catch (error) {
         console.error("ログアウトエラー:", error);
-        alert("ログアウトに失敗しました: " + error.message);
+        alert("ログアウトに失敗しました。");
     }
 });
 
@@ -107,7 +108,7 @@ signOutButton.addEventListener('click', async () => {
 // Firebase Firestore データ操作
 // =====================================================================
 
-// Firestoreからトレードデータを取得
+// Firestoreからトレードデータを取得 (リアルタイムリスナー)
 async function fetchTrades() {
     if (!currentUserId) {
         trades = []; // ユーザーがいない場合はデータをクリア
@@ -116,21 +117,20 @@ async function fetchTrades() {
         return;
     }
 
-    // ユーザーごとのコレクションからデータを取得
-    // リアルタイムリスナーを設定し、データが変更されるたびに更新
+    // onSnapshotはリアルタイム同期を有効にする。データが変更されるたびにコールバックが実行される
     db.collection('users').doc(currentUserId).collection('trades')
         .orderBy('timestamp', 'asc') // 日付順にソート
         .onSnapshot(snapshot => {
             trades = snapshot.docs.map(doc => ({
-                id: doc.id, // ドキュメントIDを保存
+                id: doc.id, // ドキュメントIDを保存 (削除時に必要)
                 ...doc.data(),
-                // FirestoreのTimestampをJavaScriptのDateオブジェクトに変換
+                // FirestoreのTimestampをJavaScriptのDateオブジェクトに変換し、YYYY-MM-DD形式とHH:MM形式に
                 date: doc.data().timestamp ? doc.data().timestamp.toDate().toISOString().split('T')[0] : '',
                 time: doc.data().timestamp ? doc.data().timestamp.toDate().toTimeString().split(' ')[0].substring(0, 5) : ''
             }));
             console.log("Fetched trades:", trades);
-            renderCalendar();
-            updateSummaries();
+            renderCalendar(); // データが更新されたらカレンダーを再描画
+            updateSummaries(); // サマリーも更新
         }, error => {
             console.error("Error fetching trades: ", error);
             alert("データの取得中にエラーが発生しました。");
@@ -144,18 +144,24 @@ async function addTradeToFirestore(trade) {
         return;
     }
     try {
-        // FirestoreのTimestamp型に変換
+        // 日付と時間を結合してDateオブジェクトを作成し、FirestoreのTimestamp型に変換
         const tradeTimestamp = new Date(`${trade.date}T${trade.time}`);
-        const docRef = await db.collection('users').doc(currentUserId).collection('trades').add({
+        // もしtrade.imageUrlがundefinedまたは空文字列ならFirestoreには保存しないように調整
+        const dataToSave = {
             pair: trade.pair,
             type: trade.type,
             profit: trade.profit,
-            imageUrl: trade.imageUrl,
-            timestamp: firebase.firestore.Timestamp.fromDate(tradeTimestamp) // Timestampで保存
-        });
+            timestamp: firebase.firestore.Timestamp.fromDate(tradeTimestamp)
+        };
+        if (trade.imageUrl && trade.imageUrl.trim() !== '') { // URLが入力されていれば追加
+            dataToSave.imageUrl = trade.imageUrl;
+        }
+
+        const docRef = await db.collection('users').doc(currentUserId).collection('trades').add(dataToSave);
         console.log("Document written with ID: ", docRef.id);
         alert("トレードが追加されました！");
-        clearInputForm();
+        clearInputForm(); // 入力フォームをクリア
+        // onSnapshotリスナーが自動的にUIを更新するため、renderCalendar()などは不要
     } catch (e) {
         console.error("Error adding document: ", e);
         alert("トレードの追加に失敗しました。");
@@ -176,6 +182,7 @@ async function deleteTradeFromFirestore(tradeId) {
         console.log("Document successfully deleted!");
         alert("トレードが削除されました。");
         tradeDetailsModal.style.display = 'none'; // モーダルを閉じる
+        // onSnapshotリスナーが自動的にUIを更新するため、renderCalendar()などは不要
     } catch (error) {
         console.error("Error removing document: ", error);
         alert("トレードの削除に失敗しました。");
@@ -201,6 +208,7 @@ async function clearAllTradesFromFirestore() {
         await batch.commit();
         alert("全てのトレード履歴がクリアされました。");
         tradeDetailsModal.style.display = 'none'; // モーダルを閉じる
+        // onSnapshotリスナーが自動的にUIを更新するため、renderCalendar()などは不要
     } catch (error) {
         console.error("Error clearing all trades: ", error);
         alert("全てのトレード履歴のクリアに失敗しました。");
@@ -258,7 +266,7 @@ function renderCalendar() {
 
             const profitSpan = document.createElement('span');
             profitSpan.classList.add('trade-profit');
-            profitSpan.textContent = `損益: ${dailyProfit.toLocaleString()}円`;
+            profitSpan.textContent = `${dailyProfit >= 0 ? '+' : ''}¥${dailyProfit.toLocaleString()}`; // 符号付き
             profitSpan.classList.add(dailyProfit >= 0 ? 'profit' : 'loss'); // 色分け
             tradeDetailsDiv.appendChild(profitSpan);
 
@@ -275,10 +283,11 @@ function renderCalendar() {
             } else if (dailyProfit < 0) {
                 dayDiv.classList.add('loss');
             }
+            // elseの場合はクラスをつけない（デフォルトのまま）
         }
 
         // 日付クリックでモーダル表示
-        dayDiv.addEventListener('click', () => showTradeDetails(dayDiv.dataset.date));
+        dayDiv.addEventListener('click', () => displayTradeDetailsModal(dayDiv.dataset.date));
 
         calendarGrid.appendChild(dayDiv);
     }
@@ -297,7 +306,7 @@ function updateMonthSummaryHeader() {
 
     const monthProfit = monthTrades.reduce((sum, trade) => sum + parseFloat(trade.profit), 0);
 
-    monthProfitLossHeader.textContent = `今月の損益: ${monthProfit.toLocaleString()}円`;
+    monthProfitLossHeader.textContent = `今月合計: ${monthProfit >= 0 ? '+' : ''}¥${monthProfit.toLocaleString()}`; // 符号付き
     monthProfitLossHeader.classList.remove('profit', 'loss');
     if (monthProfit > 0) {
         monthProfitLossHeader.classList.add('profit');
@@ -310,12 +319,11 @@ function updateMonthSummaryHeader() {
 function updateSummaries() {
     // 全期間の損益と勝率
     const totalProfit = trades.reduce((sum, trade) => sum + parseFloat(trade.profit), 0);
-    const totalWins = trades.filter(trade => parseFloat(trade.profit) > 0).length;
+    const totalWins = trades.filter(trade => parseFloat(trade.profit) > 0).length; // 日ごとの勝ちではなくトレードごとの勝ち
     const totalLosses = trades.filter(trade => parseFloat(trade.profit) < 0).length;
-    const totalTrades = trades.length;
-    const totalWinRate = totalTrades > 0 ? (totalWins / totalTrades * 100).toFixed(2) : 0;
+    const totalTrades = trades.length; // 全ての個別トレードの合計数
 
-    totalProfitLossDisplay.textContent = `${totalProfit.toLocaleString()}円`;
+    totalProfitLossDisplay.textContent = `${totalProfit >= 0 ? '+' : ''}¥${totalProfit.toLocaleString()}`; // 符号付き
     totalProfitLossDisplay.classList.remove('profit', 'loss');
     if (totalProfit > 0) {
         totalProfitLossDisplay.classList.add('profit');
@@ -323,6 +331,10 @@ function updateSummaries() {
         totalProfitLossDisplay.classList.add('loss');
     }
 
+    let totalWinRate = 0;
+    if (totalTrades > 0) {
+        totalWinRate = (totalWins / totalTrades * 100).toFixed(2);
+    }
     totalWinRateDisplay.textContent = `${totalWinRate}%`;
 
     // 今月の損益と勝率
@@ -339,7 +351,7 @@ function updateSummaries() {
     const monthTradesCount = monthTrades.length;
     const monthWinRate = monthTradesCount > 0 ? (monthWins / monthTradesCount * 100).toFixed(2) : 0;
 
-    monthProfitLossDisplay.textContent = `${monthProfit.toLocaleString()}円`;
+    monthProfitLossDisplay.textContent = `${monthProfit >= 0 ? '+' : ''}¥${monthProfit.toLocaleString()}`; // 符号付き
     monthProfitLossDisplay.classList.remove('profit', 'loss');
     if (monthProfit > 0) {
         monthProfitLossDisplay.classList.add('profit');
@@ -364,7 +376,7 @@ nextMonthButton.addEventListener('click', () => {
     renderCalendar();
 });
 
-addTradeButton.addEventListener('click', () => {
+addTradeButton.addEventListener('click', async () => { // asyncを追加
     if (!currentUserId) {
         alert("トレードを追加するにはログインしてください。");
         return;
@@ -375,7 +387,7 @@ addTradeButton.addEventListener('click', () => {
     const pair = tradePairSelect.value;
     const type = tradeTypeSelect.value;
     const profit = parseFloat(tradeProfitInput.value);
-    const imageUrl = tradeImageUrlInput.value;
+    const imageUrl = tradeImageUrlInput.value.trim();
 
     if (!date || !time || !pair || !type || isNaN(profit)) {
         alert('日付、時間、銘柄、タイプ、損益は必須項目です。');
@@ -383,7 +395,7 @@ addTradeButton.addEventListener('click', () => {
     }
 
     const newTrade = { date, time, pair, type, profit, imageUrl };
-    addTradeToFirestore(newTrade);
+    await addTradeToFirestore(newTrade); // awaitを追加
 });
 
 clearInputFormButton.addEventListener('click', clearInputForm);
@@ -395,17 +407,30 @@ clearAllDataButton.addEventListener('click', clearAllTradesFromFirestore);
 // モーダル関連
 // =====================================================================
 
-function showTradeDetails(date) {
-    modalDateHeader.textContent = `${date}のトレード履歴`;
+function displayTradeDetailsModal(dateString) {
+    modalDateHeader.textContent = `${dateString} のトレード履歴`;
     tradeListContainer.innerHTML = ''; // 既存のリストをクリア
 
-    const dailyTrades = trades.filter(trade => trade.date === date);
+    const dailyTrades = trades.filter(trade => trade.date === dateString);
 
-    if (dailyTrades.length === 0) {
-        const noTradeMessage = document.createElement('p');
-        noTradeMessage.textContent = 'この日のトレード履歴はありません。';
-        tradeListContainer.appendChild(noTradeMessage);
-    } else {
+    // その日の合計損益を計算
+    const totalDailyProfit = dailyTrades.reduce((sum, trade) => sum + parseFloat(trade.profit), 0);
+
+    // モーダル内の合計損益表示を更新
+    modalTotalPL.textContent = `TOTAL P&L: ${totalDailyProfit >= 0 ? '+' : ''}¥${totalDailyProfit.toLocaleString()}`; // 符号付き, toLocaleStringでカンマ区切り
+    modalTotalPL.classList.remove('profit', 'loss');
+    if (totalDailyProfit > 0) {
+        modalTotalPL.classList.add('profit');
+    } else if (totalDailyProfit < 0) {
+        modalTotalPL.classList.add('loss');
+    } else { // 利益も損失も0の場合のデフォルト色を確保
+        modalTotalPL.classList.add('zero-profit-loss'); // CSSにzero-profit-lossクラスの定義が必要になる場合
+    }
+
+
+    if (dailyTrades && dailyTrades.length > 0) {
+        dailyTrades.sort((a, b) => a.time.localeCompare(b.time));
+
         dailyTrades.forEach(trade => {
             const tradeItem = document.createElement('div');
             tradeItem.classList.add('trade-item');
@@ -418,51 +443,86 @@ function showTradeDetails(date) {
             const pairInfoWrapper = document.createElement('div');
             pairInfoWrapper.classList.add('pair-info-wrapper');
 
-            const pairInfo = document.createElement('span');
+            const pairInfo = document.createElement('div');
             pairInfo.classList.add('pair-info');
-            // 銘柄アイコンは一旦省略
-            pairInfo.textContent = trade.pair;
+            const img = document.createElement('img');
+            img.src = 'https://widget.oanda.jp/images/instruments/usdjpy.svg';
+            img.alt = 'USD/JPY Icon';
+            // 画像読み込みエラー時の処理
+            img.onerror = () => {
+                console.error('Failed to load USD/JPY icon:', img.src);
+                img.alt = 'USD/JPY (エラー)';
+                img.src = ''; // エラー時は空にするか、代替画像をセットする
+                img.style.display = 'none'; // 画像を非表示にする
+            };
+            pairInfo.appendChild(img);
+            const pairText = document.createElement('span');
+            pairText.textContent = trade.pair;
+            pairInfo.appendChild(pairText);
             pairInfoWrapper.appendChild(pairInfo);
 
-            // 画像表示ボタン
-            const imageButton = document.createElement('button');
-            imageButton.classList.add('image-button');
-            imageButton.textContent = '画像を見る';
-            imageButton.disabled = !trade.imageUrl; // URLがない場合は無効化
             if (trade.imageUrl) {
-                imageButton.addEventListener('click', () => {
-                    displayedImage.src = trade.imageUrl;
-                    imageDisplayModal.style.display = 'flex';
+                const imageButton = document.createElement('button');
+                imageButton.classList.add('image-button');
+                imageButton.textContent = '画像を見る';
+                imageButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showImageModal(trade.imageUrl);
                 });
+                pairInfoWrapper.appendChild(imageButton);
+            } else {
+                const imageButtonPlaceholder = document.createElement('button');
+                imageButtonPlaceholder.classList.add('image-button');
+                imageButtonPlaceholder.textContent = '画像なし';
+                imageButtonPlaceholder.disabled = true;
+                pairInfoWrapper.appendChild(imageButtonPlaceholder);
             }
-            pairInfoWrapper.appendChild(imageButton);
             tradeItem.appendChild(pairInfoWrapper);
 
-
-            const dateTimeSpan = document.createElement('span');
-            dateTimeSpan.classList.add('trade-datetime');
-            dateTimeSpan.textContent = `${trade.time}`; // 日付はヘッダーにあるため時間のみ
-            tradeItem.appendChild(dateTimeSpan);
+            const tradeDateTime = document.createElement('span');
+            tradeDateTime.classList.add('trade-datetime');
+            tradeDateTime.textContent = `${trade.time}`; // 日付はヘッダーにあるため時間のみ
+            tradeItem.appendChild(tradeDateTime);
 
             const profitDisplay = document.createElement('span');
             profitDisplay.classList.add('profit-display');
-            profitDisplay.textContent = `${trade.profit.toLocaleString()}円`;
-            profitDisplay.classList.add(trade.profit >= 0 ? 'positive' : 'negative');
+            if (trade.profit >= 0) {
+                profitDisplay.classList.add('positive');
+                profitDisplay.textContent = `+¥${trade.profit.toLocaleString()}`; // 符号付き、カンマ区切り
+            } else {
+                profitDisplay.classList.add('negative');
+                profitDisplay.textContent = `-¥${Math.abs(trade.profit).toLocaleString()}`;
+            }
             tradeItem.appendChild(profitDisplay);
 
             const deleteButton = document.createElement('button');
-            deleteButton.classList.add('action-button', 'clear-button'); // 既存のスタイルを流用
+            deleteButton.classList.add('action-button', 'clear-button');
             deleteButton.textContent = '削除';
-            deleteButton.style.marginLeft = 'auto'; // 右端に寄せる
-            deleteButton.addEventListener('click', () => deleteTradeFromFirestore(trade.id)); // Firebaseから削除
+            deleteButton.style.marginLeft = 'auto';
+            deleteButton.addEventListener('click', (e) => { // イベントオブジェクトeを受け取る
+                e.stopPropagation(); // 親要素のクリックイベントが発火しないようにする
+                deleteTradeFromFirestore(trade.id); // Firebaseから削除
+            });
             tradeItem.appendChild(deleteButton);
 
 
             tradeListContainer.appendChild(tradeItem);
         });
+    } else {
+        const noTradeMessage = document.createElement('p');
+        noTradeMessage.textContent = 'この日のトレード履歴はありません。';
+        noTradeMessage.style.textAlign = 'center';
+        noTradeMessage.style.marginTop = '20px';
+        noTradeMessage.style.color = '#b0b0b0'; // デフォルトのテキスト色
+        tradeListContainer.appendChild(noTradeMessage);
     }
 
     tradeDetailsModal.style.display = 'flex'; // モーダルを表示
+}
+
+function showImageModal(imageUrl) {
+    displayedImage.src = imageUrl;
+    imageDisplayModal.style.display = 'flex';
 }
 
 closeDetailsModalButton.addEventListener('click', () => {
@@ -499,26 +559,26 @@ function clearInputForm() {
 }
 
 // =====================================================================
-// 初期化処理
-// =====================================================================
-
-// ページロード時に現在の日付をセット
-const today = new Date();
-tradeDateInput.value = today.toISOString().split('T')[0];
-tradeTimeInput.value = today.toTimeString().split(' ')[0].substring(0, 5);
-
-// 認証状態に応じて初期表示を調整
-// onAuthStateChangedが呼ばれるまで待つため、ここではfetchTradesを呼ばない
-
-// =====================================================================
-// ★ローカルストレージ関連のコード（サーバー移行後は基本的に不要）★
+// ローカルストレージ関連のコード（サーバー移行後は基本的に不要）
 // =====================================================================
 
 // データエクスポート機能 (localStorageからJSONとしてエクスポート)
 const exportDataButton = document.getElementById('exportDataButton');
 exportDataButton.addEventListener('click', () => {
     // 現在のtrades配列をJSON形式でエクスポート
-    const dataStr = JSON.stringify(trades, null, 2); // 整形して出力
+    const dataToExport = trades.map(trade => {
+        // TimestampをISO文字列に変換してエクスポート
+        return {
+            date: trade.date,
+            time: trade.time,
+            pair: trade.pair,
+            type: trade.type,
+            profit: trade.profit,
+            imageUrl: trade.imageUrl || '', // URLがない場合は空文字列でエクスポート
+        };
+    });
+
+    const dataStr = JSON.stringify(dataToExport, null, 2); // 整形して出力
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -531,7 +591,7 @@ exportDataButton.addEventListener('click', () => {
     alert('データがエクスポートされました。');
 });
 
-// データインポート機能 (JSONファイルを読み込みlocalStorageに保存)
+// データインポート機能 (JSONファイルを読み込みFirebaseにインポート)
 const importFileInput = document.getElementById('importFileInput');
 const importDataButton = document.getElementById('importDataButton');
 
@@ -559,40 +619,49 @@ importDataButton.addEventListener('click', () => {
             }
 
             // 既存のデータをクリアするか確認
-            if (!confirm("既存のトレード履歴を上書きしてインポートしますか？")) {
+            if (!confirm("既存のトレード履歴を全て削除し、インポートするデータで上書きしますか？")) {
                 return;
             }
 
             // まず既存のユーザーのデータを全て削除
-            const batch = db.batch();
+            const deleteBatch = db.batch();
             const snapshot = await db.collection('users').doc(currentUserId).collection('trades').get();
             snapshot.docs.forEach(doc => {
-                batch.delete(doc.ref);
+                deleteBatch.delete(doc.ref);
             });
-            await batch.commit();
+            await deleteBatch.commit();
+            console.log("Existing data cleared for import.");
 
             // インポートしたデータをFirestoreに追加
-            const newBatch = db.batch();
-            importedTrades.forEach(trade => {
+            const addBatch = db.batch();
+            for (const trade of importedTrades) { // forEachだとasync/awaitが使えないためfor...of
                 // 日付と時間を結合してDateオブジェクトを作成し、Timestampに変換
                 const tradeTimestamp = new Date(`${trade.date}T${trade.time}`);
+                if (isNaN(tradeTimestamp.getTime())) {
+                    console.warn('Skipping invalid date/time trade during import:', trade);
+                    continue; // 無効な日付の場合はスキップ
+                }
+
                 const docRef = db.collection('users').doc(currentUserId).collection('trades').doc(); // 新しいドキュメントIDを生成
-                newBatch.set(docRef, {
+                const dataToSet = {
                     pair: trade.pair,
                     type: trade.type,
-                    profit: trade.profit,
-                    imageUrl: trade.imageUrl || '', // URLがない場合を考慮
+                    profit: parseFloat(trade.profit), // 数値に変換を保証
                     timestamp: firebase.firestore.Timestamp.fromDate(tradeTimestamp)
-                });
-            });
-            await newBatch.commit();
+                };
+                if (trade.imageUrl && trade.imageUrl.trim() !== '') {
+                    dataToSet.imageUrl = trade.imageUrl;
+                }
+                addBatch.set(docRef, dataToSet);
+            }
+            await addBatch.commit();
 
             alert('データが正常にインポートされました！');
             // FirestoreのonSnapshotリスナーが自動的にデータを再読み込みし、UIを更新します
             importFileInput.value = ''; // ファイル選択をクリア
         } catch (error) {
             console.error('データのインポート中にエラーが発生しました:', error);
-            alert('データのインポートに失敗しました。ファイル形式を確認してください。');
+            alert('データのインポートに失敗しました。ファイル形式が正しいか、コンソールを確認してください。');
         }
     };
 
@@ -600,6 +669,13 @@ importDataButton.addEventListener('click', () => {
 });
 
 // =====================================================================
-// 初期カレンダー描画 (認証状態に応じてfetchTradesが呼ばれるため、ここでは呼ばない)
+// 初期カレンダー描画
 // =====================================================================
-// renderCalendar(); // onAuthStateChangedで呼ばれる
+
+// ページロード時に現在の日付をセット
+const today = new Date();
+tradeDateInput.value = today.toISOString().split('T')[0];
+tradeTimeInput.value = today.toTimeString().split(' ')[0].substring(0, 5);
+
+// 認証状態の変化はonAuthStateChangedで監視し、そこでfetchTradesが呼ばれるため、
+// DOMContentLoadedの直下ではfetchTradesやrenderCalendarを直接呼ばない。
