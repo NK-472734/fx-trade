@@ -33,6 +33,7 @@ h1, h2 {
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* User Status & Auth Buttons */
 .auth-section {
     background-color: rgba(30, 30, 50, 0.7); /* auth-sectionにも背景色を追加 */
     padding: 15px 25px;
@@ -125,7 +126,7 @@ button:disabled {
 
 
 .action-button.clear-button {
-    background: linear-gradient(180deg, #d32f2f, #b71c1c); /* 赤系のグラデーション */
+    background: linear-gradient(180deg, #d32f2f, #b71c1c);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -134,7 +135,7 @@ button:disabled {
 }
 
 .action-button.add-button {
-    background: linear-gradient(180deg, #4CAF50, #2E7D32); /* 緑系のグラデーション */
+    background: linear-gradient(180deg, #4CAF50, #2E7D32);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -144,8 +145,8 @@ button:disabled {
 
 /* Calendar Section */
 .calendar-section {
-    flex: 2; /* カレンダーを広めにする */
-    min-width: 600px; /* 最小幅 */
+    flex: 2;
+    min-width: 600px;
     background-color: rgba(30, 30, 50, 0.7);
     border-radius: 12px;
     padding: 25px;
@@ -177,276 +178,145 @@ button:disabled {
     font-weight: bold;
     color: #a0a0a0;
     margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9em;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px; /* セル間の隙間 */
+    gap: 5px;
 }
 
 .calendar-day {
-    background-color: rgba(40, 40, 60, 0.6);
-    border-radius: 8px;
-    padding: 15px 5px;
-    min-height: 80px; /* セルの高さ */
+    background-color: #2a2a3a;
+    border-radius: 10px;
+    padding: 15px 10px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2); /* 内側のシャドウ */
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
 }
 
 .calendar-day:hover:not(.empty) {
-    background-color: rgba(50, 50, 70, 0.8);
+    background-color: #3a3a4a;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.08);
 }
 
 .calendar-day.empty {
-    background-color: transparent;
+    background-color: #1f1f2f;
     cursor: default;
     box-shadow: none;
     border: none;
 }
 
-.day-number {
-    font-size: 1.1em;
+.calendar-day .day-number {
+    font-size: 1.2em;
     font-weight: bold;
-    color: #ffffff;
+    color: #e0e0e0;
     margin-bottom: 5px;
 }
 
-.trade-details {
-    font-size: 0.85em;
+.calendar-day .trade-details {
     text-align: center;
-    width: 100%;
-}
-
-.trade-profit {
-    display: block;
-    font-weight: 600;
+    font-size: 0.8em;
     margin-top: 5px;
 }
 
-.trade-count {
+.calendar-day .trade-profit {
+    font-weight: bold;
     display: block;
-    font-size: 0.75em;
+}
+
+.calendar-day .trade-count {
+    display: block;
     color: #b0b0b0;
 }
 
-/* Profit/Loss Colors for Calendar Days and Text */
-.profit {
-    color: #81c784 !important; /* 明るい緑 */
-}
-
-.loss {
-    color: #e57373 !important; /* 明るい赤 */
-}
-
+/* Calendar Day Profit/Loss Indicators */
 .calendar-day.profit {
-    background-color: rgba(46, 125, 50, 0.4); /* 緑の背景 */
-    border: 1px solid rgba(129, 199, 132, 0.3);
+    background-color: rgba(40, 80, 40, 0.6);
+    border: 1px solid #4CAF50;
 }
 
 .calendar-day.loss {
-    background-color: rgba(198, 40, 40, 0.4); /* 赤の背景 */
-    border: 1px solid rgba(229, 115, 115, 0.3);
+    background-color: rgba(80, 40, 40, 0.6);
+    border: 1px solid #f44336;
 }
 
-/* Input Form Section and Side Panel */
-.side-panel {
-    flex: 1;
-    min-width: 350px;
-    max-width: 450px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.trade-input-section, .summary-section, .data-transfer-section {
-    background-color: rgba(30, 30, 50, 0.7);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+/* Month Profit/Loss Header */
+.month-profit-loss-header {
     text-align: center;
-}
-
-h3 {
-    color: #ffffff; /* 見出しを白に変更 */
-    font-weight: 600;
-    margin-bottom: 25px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-
-.input-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 18px;
-}
-
-.input-row label {
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #b0b0b0;
-}
-
-.input-row input,
-.input-row select {
-    width: calc(100% - 24px); /* パディング分を引く */
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    background-color: rgba(50, 50, 70, 0.7);
-    color: #e0e0e0;
-    font-size: 1em;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
-}
-
-.input-row input[type="file"] {
-    background-color: rgba(50, 50, 70, 0.7);
-    cursor: pointer;
-    padding: 8px; /* デフォルトのpaddingを調整 */
-    font-size: 0.9em;
-}
-.input-row input[type="file"]::-webkit-file-upload-button {
-    background: linear-gradient(180deg, #6c757d, #5a6268); /* ファイル選択ボタンのグラデーション */
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-.input-row input[type="file"]::file-selector-button {
-    background: linear-gradient(180deg, #6c757d, #5a6268);
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-
-.input-row input:focus,
-.input-row select:focus {
-    border-color: #7b68ee; /* フォーカス時の色 */
-    box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.3);
-    outline: none;
-}
-
-.button-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.action-button {
-    flex-grow: 1;
-    min-width: 150px;
-}
-
-.full-width {
-    width: 100%;
-    min-width: unset;
-}
-
-/* Summary Section */
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-}
-
-.summary-item:last-child {
-    border-bottom: none;
-}
-
-.summary-item p {
-    margin: 0;
-    font-size: 1.1em;
-    color: #b0b0b0; /* テキストの色 */
-}
-
-.summary-value {
+    font-size: 1.5em;
     font-weight: bold;
-    font-size: 1.1em; /* サイズ調整 */
-    color: #ffffff; /* デフォルト白 */
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(60, 60, 80, 0.5);
+    color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.summary-value.profit {
+.month-profit-loss-header.profit {
     color: #81c784;
 }
 
-.summary-value.loss {
+.month-profit-loss-header.loss {
     color: #e57373;
 }
 
 
-/* Modal Styles */
+/* Modals (Trade Details & Image Display) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 100;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    backdrop-filter: blur(8px); /* モーダルの背景をぼかす */
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #1f1f3f, #1a1a2e); /* モーダル背景のグラデーション */
+    background-color: #2a2a3a;
+    margin: auto;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-    max-width: 700px;
     width: 90%;
+    max-width: 700px;
     position: relative;
-    color: #e0e0e0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .close-button {
     color: #aaa;
-    font-size: 30px;
-    font-weight: bold;
     position: absolute;
     top: 15px;
     right: 25px;
+    font-size: 35px;
+    font-weight: bold;
     cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    box-shadow: none;
+    transition: color 0.3s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #fff;
+    color: #e0e0e0;
     text-decoration: none;
     cursor: pointer;
 }
@@ -454,47 +324,41 @@ h3 {
 #modalDateHeader {
     font-size: 1.8em;
     color: #ffffff;
-    margin-bottom: 10px; /* 合計損益との間を少し開ける */
+    margin-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     padding-bottom: 15px;
 }
 
-/* モーダル内の合計損益表示のスタイル */
+/* Modal Total P&L */
 .modal-total-pl {
-    font-size: 1.4em; /* 少し小さく */
-    font-weight: bold;
     text-align: center;
+    font-size: 1.4em;
+    font-weight: bold;
     margin-bottom: 20px;
-    color: #e0e0e0; /* デフォルト色 */
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* 下線追加 */
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(60, 60, 80, 0.5);
+    color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .modal-total-pl.profit {
-    color: #81c784; /* 緑色 */
+    color: #81c784;
 }
+
 .modal-total-pl.loss {
-    color: #e57373; /* 赤色 */
+    color: #e57373;
 }
 
-#tradeList {
-    max-height: 400px;
+/* Trade List in Modal */
+.trade-list-container {
+    flex-grow: 1;
     overflow-y: auto;
-    padding-right: 10px; /* スクロールバーのためのスペース */
+    padding-right: 10px;
 }
 
-#tradeList::-webkit-scrollbar {
-    width: 8px;
-}
-
-#tradeList::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-}
-
-#tradeList::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
+/* Individual Trade Item Styles */
 .trade-item {
     display: flex;
     align-items: center;
@@ -518,19 +382,20 @@ h3 {
 }
 
 .type-indicator.buy {
-    background-color: #28a745; /* Buyは緑 */
+    background-color: #28a745;
     color: #fff;
 }
 
 .type-indicator.sell {
-    background-color: #dc3545; /* Sellは赤 */
+    background-color: #dc3545;
     color: #fff;
 }
 
 .pair-info-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px; /* 銘柄とボタンの間の隙間 */
+    gap: 10px;
+    margin-right: 20px;
 }
 
 .pair-info {
@@ -543,49 +408,49 @@ h3 {
 }
 
 .pair-info img {
-    width: 28px; /* イメージサイズ */
+    width: 28px;
     height: 28px;
-    border-radius: 50%; /* 丸い形 */
+    border-radius: 50%;
     object-fit: cover;
 }
 
-/* 時間表示のスタイル */
+/* Time display in trade item */
 .trade-datetime {
     font-size: 0.9em;
     color: #b0b0b0;
     margin-right: 20px;
 }
 
-/* 画像表示ボタンのスタイル */
+/* Image button in trade item */
 .image-button {
-    background: linear-gradient(180deg, #6a5acd, #483d8b); /* 青紫系のグラデーション */
+    background: linear-gradient(180deg, #6a5acd, #483d8b);
     padding: 6px 12px;
+    border-radius: 5px;
     font-size: 0.8em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-left: 0;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .image-button:hover:not(:disabled) {
     background: linear-gradient(180deg, #7b68ee, #5c4baf);
+    transform: translateY(-1px);
 }
 
 .image-button:disabled {
-    background: #2a2a3a; /* 無効時の色 */
+    background: #2a2a3a;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
-/* 個別トレードの損益表示の画像スタイル (今回は画像専用モーダルを使うので、ここでの直接表示は不要) */
-.trade-item .trade-image {
-    max-width: 100%;
-    height: auto;
-    margin-top: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.trade-item .profit-display {
+/* Profit display in trade item */
+.profit-display {
     font-weight: bold;
     font-size: 1.2em;
-    margin-left: auto; /* 右端に寄せる */
+    margin-left: auto;
     text-align: right;
     min-width: 100px;
 }
@@ -598,50 +463,121 @@ h3 {
     color: #e57373;
 }
 
+/* Delete button in trade item */
+.trade-item .action-button.clear-button {
+    background: linear-gradient(180deg, #d32f2f, #b71c1c);
+    padding: 6px 12px;
+    font-size: 0.8em;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-left: 15px;
+    min-width: unset;
+    flex-shrink: 0;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.trade-item .action-button.clear-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #e53935, #c62828);
+    transform: translateY(-1px);
+}
+
+
 /* Image Display Modal */
-#imageDisplayModal .modal-content {
+.image-display-modal-content {
+    background-color: #2a2a3a;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
     max-width: 90%;
     max-height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-#displayedImage {
+.image-display-modal-content img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* 画像全体を表示 */
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    object-fit: contain;
 }
 
-/* Data Import/Export Section */
+
+/* Export/Import Section */
 .data-transfer-section {
     flex: 1;
     min-width: 300px;
     background-color: rgba(30, 30, 50, 0.7);
     border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     margin-top: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.data-transfer-section h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.data-transfer-section .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .data-transfer-section button {
-    width: 100%;
-    margin-bottom: 10px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.data-transfer-section button.export-button {
+    background: linear-gradient(180deg, #2196F3, #1976D2);
+}
+.data-transfer-section button.export-button:hover {
+    background: linear-gradient(180deg, #42a5f5, #2196F3);
+    transform: translateY(-2px);
+}
+
+.data-transfer-section button.import-button {
+    background: linear-gradient(180deg, #FFC107, #FFA000);
+    color: #333;
+}
+.data-transfer-section button.import-button:hover {
+    background: linear-gradient(180deg, #FFD54F, #FFC107);
+    transform: translateY(-2px);
 }
 
 .data-transfer-section input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    background-color: rgba(50, 50, 70, 0.7);
+    margin-top: 15px;
     color: #e0e0e0;
-    font-size: 1em;
-    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #333;
+    cursor: pointer;
+    width: auto;
+    max-width: 100%;
 }
+
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
@@ -650,7 +586,7 @@ h3 {
         padding: 20px;
     }
 
-    .auth-section { /* レスポンシブ時の認証セクション */
+    .auth-section {
         flex-wrap: wrap;
         justify-content: center;
         gap: 10px;
@@ -662,18 +598,17 @@ h3 {
         margin-bottom: 10px;
     }
 
-
     .calendar-section,
     .trade-input-section,
     .summary-section,
     .data-transfer-section {
-        min-width: unset; /* 最小幅を解除 */
-        width: 100%; /* 全幅にする */
+        min-width: unset;
+        width: 100%;
     }
 
     .summary-section,
     .data-transfer-section {
-        margin-top: 20px; /* 上部の余白を調整 */
+        margin-top: 20px;
     }
 }
 
@@ -687,78 +622,136 @@ h3 {
         gap: 20px;
     }
 
-    h1, h2 {
-        font-size: 1.8em;
+    header h1 {
+        font-size: 2em;
     }
 
-    button {
-        padding: 8px 15px;
-        font-size: 0.9em;
+    .summary-card {
+        min-width: unset;
+        padding: 15px;
+    }
+
+    .summary-card p {
+        font-size: 1.5em;
+    }
+
+    .trade-input-form, .calendar-section, .data-transfer-section {
+        padding: 20px;
+    }
+
+    .trade-input-form h2, .calendar-header h2, .data-transfer-section h2 {
+        font-size: 1.5em;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+
+    .calendar-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .calendar-header button {
+        width: 100%;
     }
 
     .calendar-day {
         min-height: 60px;
-        padding: 10px 3px;
+        padding: 10px 5px;
     }
 
-    .day-number {
+    .calendar-day .day-number {
         font-size: 1em;
     }
 
-    .trade-details {
-        font-size: 0.75em;
+    .calendar-day .trade-details {
+        font-size: 0.7em;
     }
 
     .modal-content {
         padding: 20px;
+        max-width: 95%;
     }
 
     #modalDateHeader {
         font-size: 1.5em;
         margin-bottom: 15px;
     }
-    .modal-total-pl { /* レスポンシブ時の調整 */
+
+    .modal-total-pl {
         font-size: 1.2em;
+        padding: 8px;
+    }
+
+    .trade-list-container {
+        padding-right: 0;
     }
 
     .trade-item {
-        flex-wrap: wrap;
-        padding: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 15px;
     }
 
     .type-indicator {
-        margin-right: 10px;
+        margin-right: 0;
         margin-bottom: 5px;
+        align-self: center;
     }
 
     .pair-info-wrapper {
-        flex-direction: column; /* 縦並び */
-        align-items: flex-start;
-        margin-right: 10px;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 0;
         margin-bottom: 5px;
-        width: auto; /* 幅を自動調整 */
-        gap: 5px; /* 要素間の隙間を調整 */
+        width: 100%;
+        justify-content: space-between;
     }
-    .pair-info-wrapper .pair-info { /* 銘柄情報 */
-        margin-bottom: 0; /* 下マージンをリセット */
+    .pair-info-wrapper .pair-info {
+        margin-bottom: 0;
     }
-    .pair-info-wrapper .image-button { /* 画像ボタン */
-        width: auto; /* 自動幅 */
-        margin-top: 5px;
-        align-self: flex-start; /* 左寄せ */
+    .pair-info-wrapper .image-button {
+        width: auto;
+        margin-top: 0;
+        align-self: auto;
     }
-
 
     .trade-datetime {
-        margin-right: 10px;
+        margin-right: 0;
         margin-bottom: 5px;
+        width: 100%;
+        text-align: right;
     }
 
     .profit-display {
-        margin-left: unset; /* 自動マージンを解除 */
+        margin-left: unset;
         width: 100%;
         text-align: left;
         margin-top: 5px;
+    }
+    .trade-item .action-button.clear-button {
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .data-transfer-section .button-group {
+        flex-direction: column;
+    }
+    .data-transfer-section button {
+        width: 100%;
     }
 }
 
@@ -772,7 +765,7 @@ h3 {
         gap: 15px;
     }
 
-    .auth-section { /* 認証セクションのレスポンシブ調整 */
+    .auth-section {
         padding: 10px 15px;
         gap: 8px;
     }
@@ -788,24 +781,29 @@ h3 {
         font-size: 1.5em;
     }
 
-    button {
-        padding: 6px 12px;
+    .summary-card {
+        padding: 10px;
+    }
+
+    .summary-card h3 {
+        font-size: 1em;
+    }
+
+    .summary-card p {
+        font-size: 1.2em;
+    }
+
+    .trade-input-form, .calendar-section, .data-transfer-section {
+        padding: 15px;
+    }
+
+    .trade-input-form h2, .calendar-header h2, .data-transfer-section h2 {
+        font-size: 1.3em;
+    }
+
+    .form-group label {
         font-size: 0.8em;
     }
-
-    .calendar-day {
-        min-height: 50px;
-        padding: 8px 2px;
-    }
-
-    .day-number {
-        font-size: 0.9em;
-    }
-
-    .trade-details {
-        font-size: 0.7em;
-    }
-
     .input-row input,
     .input-row select {
         padding: 10px;
@@ -817,36 +815,39 @@ h3 {
         font-size: 0.9em;
     }
 
-    .trade-input-section, .summary-section, .data-transfer-section {
-        padding: 20px;
-    }
-
-    h3 {
-        font-size: 1.4em;
-    }
-
-    .summary-item p, .summary-value {
-        font-size: 1em;
+    .trade-item {
+        padding: 10px;
     }
 
     .type-indicator {
-        font-size: 0.8em;
+        font-size: 0.75em;
         padding: 5px 10px;
+        min-width: 40px;
     }
 
     .pair-info {
-        font-size: 1em;
+        font-size: 0.9em;
     }
     .pair-info img {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
     }
 
     .trade-datetime {
-        font-size: 0.85em;
+        font-size: 0.8em;
+    }
+
+    .image-button {
+        padding: 5px 10px;
+        font-size: 0.7em;
     }
 
     .profit-display {
-        font-size: 1.1em;
+        font-size: 1em;
+    }
+
+    .trade-item .action-button.clear-button {
+        padding: 5px 10px;
+        font-size: 0.7em;
     }
 }
