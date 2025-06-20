@@ -34,17 +34,26 @@ h1, h2 {
 }
 
 .auth-section {
-    width: 100%;
-    text-align: right;
+    background-color: rgba(30, 30, 50, 0.7); /* auth-sectionにも背景色を追加 */
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%; /* 横幅いっぱいに */
+    max-width: 1400px; /* containerの幅に合わせる */
+    display: flex;
+    justify-content: flex-end; /* 右寄せ */
+    align-items: center;
+    gap: 15px; /* ボタン間の隙間 */
+    box-sizing: border-box;
 }
 
-.auth-section span {
-    margin-right: 15px;
+#userStatus {
+    margin-right: auto; /* 左に寄せる */
+    font-weight: bold;
+    color: #ccc;
     font-size: 0.9em;
-    color: #b0b0b0;
 }
 
 /* Buttons - General Styling (for all buttons) */
@@ -100,6 +109,20 @@ button:disabled {
     transform: none;
     box-shadow: none;
 }
+
+.auth-button { /* 認証ボタンのスタイル */
+    background: linear-gradient(180deg, #6a5acd, #483d8b);
+}
+.auth-button:hover {
+    background: linear-gradient(180deg, #7b68ee, #5c4baf);
+}
+.auth-button.sign-out-button {
+    background: linear-gradient(180deg, #6c757d, #5a6268);
+}
+.auth-button.sign-out-button:hover {
+    background: linear-gradient(180deg, #7a8288, #687077);
+}
+
 
 .action-button.clear-button {
     background: linear-gradient(180deg, #d32f2f, #b71c1c); /* 赤系のグラデーション */
@@ -236,33 +259,48 @@ button:disabled {
     border: 1px solid rgba(229, 115, 115, 0.3);
 }
 
-/* Input Form Section */
-.input-section {
-    flex: 1; /* 入力フォームを狭めにする */
-    min-width: 300px; /* 最小幅 */
+/* Input Form Section and Side Panel */
+.side-panel {
+    flex: 1;
+    min-width: 350px;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.trade-input-section, .summary-section, .data-transfer-section {
     background-color: rgba(30, 30, 50, 0.7);
+    padding: 30px;
     border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
-.form-group {
-    margin-bottom: 15px;
+h3 {
+    color: #ffffff; /* 見出しを白に変更 */
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-.form-group label {
-    display: block;
+
+.input-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.input-row label {
     margin-bottom: 8px;
     font-weight: 500;
     color: #b0b0b0;
 }
 
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group select {
-    width: calc(100% - 20px); /* Paddingを考慮 */
+.input-row input,
+.input-row select {
+    width: calc(100% - 24px); /* パディング分を引く */
     padding: 12px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
@@ -273,24 +311,62 @@ button:disabled {
     box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.input-row input[type="file"] {
+    background-color: rgba(50, 50, 70, 0.7);
+    cursor: pointer;
+    padding: 8px; /* デフォルトのpaddingを調整 */
+    font-size: 0.9em;
+}
+.input-row input[type="file"]::-webkit-file-upload-button {
+    background: linear-gradient(180deg, #6c757d, #5a6268); /* ファイル選択ボタンのグラデーション */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.input-row input[type="file"]::file-selector-button {
+    background: linear-gradient(180deg, #6c757d, #5a6268);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+.input-row input:focus,
+.input-row select:focus {
     border-color: #7b68ee; /* フォーカス時の色 */
     box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.3);
     outline: none;
 }
 
-/* Summary Section */
-.summary-section {
-    flex: 1; /* サマリーを狭めにする */
-    min-width: 300px; /* 最小幅 */
-    background-color: rgba(30, 30, 50, 0.7);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    margin-top: 30px; /* カレンダーと入力フォームの下に配置 */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
 }
 
+.action-button {
+    flex-grow: 1;
+    min-width: 150px;
+}
+
+.full-width {
+    width: 100%;
+    min-width: unset;
+}
+
+/* Summary Section */
 .summary-item {
     display: flex;
     justify-content: space-between;
@@ -303,14 +379,16 @@ button:disabled {
     border-bottom: none;
 }
 
-.summary-item span:first-child {
-    color: #b0b0b0;
-    font-weight: 500;
+.summary-item p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #b0b0b0; /* テキストの色 */
 }
 
 .summary-value {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.1em; /* サイズ調整 */
+    color: #ffffff; /* デフォルト白 */
 }
 
 .summary-value.profit {
@@ -320,6 +398,7 @@ button:disabled {
 .summary-value.loss {
     color: #e57373;
 }
+
 
 /* Modal Styles */
 .modal {
@@ -334,6 +413,8 @@ button:disabled {
     background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
     backdrop-filter: blur(8px); /* モーダルの背景をぼかす */
 }
 
@@ -357,7 +438,7 @@ button:disabled {
     top: 15px;
     right: 25px;
     cursor: pointer;
-    background: none; /* ボタンのデフォルトスタイルをリセット */
+    background: none;
     border: none;
     padding: 0;
     box-shadow: none;
@@ -373,9 +454,26 @@ button:disabled {
 #modalDateHeader {
     font-size: 1.8em;
     color: #ffffff;
-    margin-bottom: 25px;
+    margin-bottom: 10px; /* 合計損益との間を少し開ける */
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     padding-bottom: 15px;
+}
+
+/* モーダル内の合計損益表示のスタイル */
+.modal-total-pl {
+    font-size: 1.4em; /* 少し小さく */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #e0e0e0; /* デフォルト色 */
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* 下線追加 */
+}
+.modal-total-pl.profit {
+    color: #81c784; /* 緑色 */
+}
+.modal-total-pl.loss {
+    color: #e57373; /* 赤色 */
 }
 
 #tradeList {
@@ -431,36 +529,60 @@ button:disabled {
 
 .pair-info-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-right: 20px;
+    align-items: center;
+    gap: 10px; /* 銘柄とボタンの間の隙間 */
 }
 
 .pair-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-weight: bold;
     font-size: 1.1em;
     color: #ffffff;
-    margin-bottom: 5px;
 }
 
-.image-button {
-    background: linear-gradient(180deg, #6a5acd, #483d8b); /* 青紫系のグラデーション */
-    padding: 6px 12px;
-    font-size: 0.8em;
-    margin-top: 5px;
+.pair-info img {
+    width: 28px; /* イメージサイズ */
+    height: 28px;
+    border-radius: 50%; /* 丸い形 */
+    object-fit: cover;
 }
 
-.image-button:hover:not(:disabled) {
-    background: linear-gradient(180deg, #7b68ee, #5c4baf);
-}
-
+/* 時間表示のスタイル */
 .trade-datetime {
     font-size: 0.9em;
     color: #b0b0b0;
     margin-right: 20px;
 }
 
-.profit-display {
+/* 画像表示ボタンのスタイル */
+.image-button {
+    background: linear-gradient(180deg, #6a5acd, #483d8b); /* 青紫系のグラデーション */
+    padding: 6px 12px;
+    font-size: 0.8em;
+}
+
+.image-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #7b68ee, #5c4baf);
+}
+
+.image-button:disabled {
+    background: #2a2a3a; /* 無効時の色 */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* 個別トレードの損益表示の画像スタイル (今回は画像専用モーダルを使うので、ここでの直接表示は不要) */
+.trade-item .trade-image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.trade-item .profit-display {
     font-weight: bold;
     font-size: 1.2em;
     margin-left: auto; /* 右端に寄せる */
@@ -495,7 +617,7 @@ button:disabled {
 }
 
 /* Data Import/Export Section */
-.data-io-section {
+.data-transfer-section {
     flex: 1;
     min-width: 300px;
     background-color: rgba(30, 30, 50, 0.7);
@@ -505,12 +627,12 @@ button:disabled {
     margin-top: 30px;
 }
 
-.data-io-section button {
+.data-transfer-section button {
     width: 100%;
     margin-bottom: 10px;
 }
 
-.data-io-section input[type="file"] {
+.data-transfer-section input[type="file"] {
     width: 100%;
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -528,16 +650,29 @@ button:disabled {
         padding: 20px;
     }
 
+    .auth-section { /* レスポンシブ時の認証セクション */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    #userStatus {
+        margin-right: 0;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+
     .calendar-section,
-    .input-section,
+    .trade-input-section,
     .summary-section,
-    .data-io-section {
+    .data-transfer-section {
         min-width: unset; /* 最小幅を解除 */
         width: 100%; /* 全幅にする */
     }
 
     .summary-section,
-    .data-io-section {
+    .data-transfer-section {
         margin-top: 20px; /* 上部の余白を調整 */
     }
 }
@@ -582,6 +717,9 @@ button:disabled {
         font-size: 1.5em;
         margin-bottom: 15px;
     }
+    .modal-total-pl { /* レスポンシブ時の調整 */
+        font-size: 1.2em;
+    }
 
     .trade-item {
         flex-wrap: wrap;
@@ -594,9 +732,22 @@ button:disabled {
     }
 
     .pair-info-wrapper {
+        flex-direction: column; /* 縦並び */
+        align-items: flex-start;
         margin-right: 10px;
         margin-bottom: 5px;
+        width: auto; /* 幅を自動調整 */
+        gap: 5px; /* 要素間の隙間を調整 */
     }
+    .pair-info-wrapper .pair-info { /* 銘柄情報 */
+        margin-bottom: 0; /* 下マージンをリセット */
+    }
+    .pair-info-wrapper .image-button { /* 画像ボタン */
+        width: auto; /* 自動幅 */
+        margin-top: 5px;
+        align-self: flex-start; /* 左寄せ */
+    }
+
 
     .trade-datetime {
         margin-right: 10px;
@@ -608,5 +759,94 @@ button:disabled {
         width: 100%;
         text-align: left;
         margin-top: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .auth-section { /* 認証セクションのレスポンシブ調整 */
+        padding: 10px 15px;
+        gap: 8px;
+    }
+    .auth-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    #userStatus {
+        font-size: 0.8em;
+    }
+
+    h1, h2 {
+        font-size: 1.5em;
+    }
+
+    button {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+
+    .calendar-day {
+        min-height: 50px;
+        padding: 8px 2px;
+    }
+
+    .day-number {
+        font-size: 0.9em;
+    }
+
+    .trade-details {
+        font-size: 0.7em;
+    }
+
+    .input-row input,
+    .input-row select {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    .input-row input[type="file"]::-webkit-file-upload-button,
+    .input-row input[type="file"]::file-selector-button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+    }
+
+    .trade-input-section, .summary-section, .data-transfer-section {
+        padding: 20px;
+    }
+
+    h3 {
+        font-size: 1.4em;
+    }
+
+    .summary-item p, .summary-value {
+        font-size: 1em;
+    }
+
+    .type-indicator {
+        font-size: 0.8em;
+        padding: 5px 10px;
+    }
+
+    .pair-info {
+        font-size: 1em;
+    }
+    .pair-info img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .trade-datetime {
+        font-size: 0.85em;
+    }
+
+    .profit-display {
+        font-size: 1.1em;
     }
 }
