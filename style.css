@@ -20,6 +20,52 @@ body {
     width: 100%;
 }
 
+/* 認証UIのスタイル */
+.auth-section {
+    background-color: #0f0f1d;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%; /* 横幅いっぱいに */
+    max-width: 1400px; /* containerの幅に合わせる */
+    display: flex;
+    justify-content: flex-end; /* 右寄せ */
+    align-items: center;
+    gap: 15px; /* ボタン間の隙間 */
+    box-sizing: border-box;
+}
+
+#userStatus {
+    margin-right: auto; /* 左に寄せる */
+    font-weight: bold;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.auth-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+    background-color: #0056b3;
+}
+
+.auth-button.sign-out-button {
+    background-color: #6c757d;
+}
+.auth-button.sign-out-button:hover {
+    background-color: #5a6268;
+}
+
 /* カレンダーセクション */
 .calendar-section {
     background-color: #0f0f1d;
@@ -197,7 +243,7 @@ body {
 }
 
 /* 個別トレード入力セクション */
-.trade-input-section, .summary-section {
+.trade-input-section, .summary-section, .data-transfer-section { /* ★追加★ */
     background-color: #0f0f1d;
     padding: 30px;
     border-radius: 12px;
@@ -205,7 +251,7 @@ body {
     text-align: center;
 }
 
-.trade-input-section h3, .summary-section h3 {
+.trade-input-section h3, .summary-section h3, .data-transfer-section h3 { /* ★追加★ */
     color: #007bff;
     margin-bottom: 25px;
     font-size: 1.8em;
@@ -235,6 +281,35 @@ body {
     font-size: 1em;
     box-sizing: border-box;
 }
+
+/* ファイル選択ボタンのスタイル調整 (input[type="file"]はブラウザによって見た目が違うため調整) */
+.input-row input[type="file"] {
+    background-color: #3f3f5a; /* ボタンに近い色 */
+    cursor: pointer;
+    padding: 8px; /* デフォルトのpaddingを調整 */
+    font-size: 0.9em;
+}
+.input-row input[type="file"]::-webkit-file-upload-button { /* Chrome, Safari */
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10px;
+}
+.input-row input[type="file"]::file-selector-button { /* Firefox */
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10px;
+}
+
 
 .input-row input:focus,
 .input-row select:focus {
@@ -431,7 +506,7 @@ body {
     background-color: #dc3545; /* 赤 */
 }
 
-.trade-item .pair-info-wrapper { /* ★新規追加★ 銘柄情報と画像ボタンをまとめる */
+.trade-item .pair-info-wrapper { /* 銘柄情報と画像ボタンをまとめる */
     display: flex;
     align-items: center;
     gap: 10px; /* 銘柄とボタンの間の隙間 */
@@ -460,7 +535,7 @@ body {
     white-space: nowrap; /* 日付と時間が改行されないように */
 }
 
-/* 画像表示ボタンのスタイル (新規) */
+/* 画像表示ボタンのスタイル */
 .trade-item .image-button {
     background-color: #007bff;
     color: white;
@@ -470,7 +545,6 @@ body {
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.3s ease;
-    /* margin-left: auto; /* 銘柄の横に置くため、このautoを削除 */
 }
 .trade-item .image-button:hover {
     background-color: #0056b3;
@@ -482,7 +556,7 @@ body {
 }
 
 /* 個別トレードの損益表示の画像スタイル (今回は画像専用モーダルを使うので、ここでの直接表示は不要) */
-.trade-item .trade-image { /* このスタイルは使われませんが、削除はせず残しておきます */
+.trade-item .trade-image {
     max-width: 100%;
     height: auto;
     margin-top: 15px;
@@ -490,7 +564,6 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* .trade-item内の要素の配置調整 */
 .trade-item .profit-display {
     padding: 8px 15px;
     border-radius: 8px;
@@ -579,11 +652,11 @@ body {
         font-size: 1em;
     }
 
-    .trade-input-section, .summary-section {
+    .trade-input-section, .summary-section, .data-transfer-section { /* ★追加★ */
         padding: 25px;
     }
 
-    .trade-input-section h3, .summary-section h3 {
+    .trade-input-section h3, .summary-section h3, .data-transfer-section h3 { /* ★追加★ */
         font-size: 1.5em;
     }
     .action-button {
@@ -618,32 +691,31 @@ body {
         right: 15px;
     }
     .trade-item {
-        flex-direction: column; /* 個別トレードアイテムを縦並びに */
+        flex-direction: column;
         align-items: flex-start;
         gap: 10px;
         padding: 12px 15px;
     }
     .trade-item .type-indicator,
-    .trade-item .pair-info-wrapper, /* ラッパーも */
+    .trade-item .pair-info-wrapper,
     .trade-item .trade-datetime,
     .trade-item .profit-display {
-        width: 100%; /* 横幅いっぱいに */
+        width: 100%;
         min-width: unset;
-        margin-left: 0; /* 右寄せリセット */
-        text-align: left; /* 左寄せ */
+        margin-left: 0;
+        text-align: left;
     }
     .trade-item .pair-info-wrapper {
-        justify-content: flex-start; /* 銘柄とボタンは左寄せ */
+        justify-content: flex-start;
     }
-    .trade-item .trade-datetime { /* 時間は右寄せのまま */
+    .trade-item .trade-datetime {
         text-align: right;
     }
-    .trade-item .type-indicator { /* BUY/SELLは中央寄せのまま */
+    .trade-item .type-indicator {
         text-align: center;
     }
-    .trade-item .image-button { /* ボタンも */
-        /* width: auto; /* ボタンは内容に合わせて幅を調整 */
-        flex-grow: 0; /* 伸びない */
+    .trade-item .image-button {
+        flex-grow: 0;
         min-width: unset;
         text-align: center;
         margin-left: 0;
