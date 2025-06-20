@@ -5,14 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FX取引履歴カレンダー</title>
     <link rel="stylesheet" href="style.css">
-
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FX履歴"> </head>
+</head>
 <body>
     <div class="container">
+        <div class="calendar-section">
+            <div class="calendar-header">
+                <button id="prevMonth" class="nav-button">&lt;</button>
+                <div class="month-summary-container">
+                    <h2 id="currentMonthYear"></h2>
+                    <p id="monthProfitLossHeader" class="month-summary-value"></p>
+                </div>
+                <button id="nextMonth" class="nav-button">&gt;</button>
+            </div>
+            <div class="calendar-weekdays">
+                <span>日</span>
+                <span>月</span>
+                <span>火</span>
+                <span>水</span>
+                <span>木</span>
+                <span>金</span>
+                <span>土</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                </div>
         </div>
+
+        <div class="side-panel">
+            <div class="trade-input-section">
+                <h3>新しいトレードを入力</h3>
+                <div class="input-row">
+                    <label for="tradeDate">日付:</label>
+                    <input type="date" id="tradeDate">
+                </div>
+                <div class="input-row">
+                    <label for="tradeTime">時間:</label>
+                    <input type="time" id="tradeTime">
+                </div>
+                <div class="input-row">
+                    <label for="tradePair">銘柄:</label>
+                    <select id="tradePair">
+                        <option value="USDJPY">USD/JPY</option>
+                        </select>
+                </div>
+                <div class="input-row">
+                    <label for="tradeType">タイプ:</label>
+                    <select id="tradeType">
+                        <option value="Buy">Buy</option>
+                        <option value="Sell">Sell</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label for="tradeProfit">損益 (円):</label>
+                    <input type="number" id="tradeProfit" step="0.01" placeholder="例: 5000 または -3000">
+                </div>
+                <div class="input-row">
+                    <label for="tradeImageUrl">画像URL (オプション):</label>
+                    <input type="url" id="tradeImageUrl" placeholder="例: https://example.com/chart.png">
+                </div>
+                <div class="button-group">
+                    <button id="addTrade" class="action-button add-button">トレードを追加</button>
+                    <button id="clearInputForm" class="action-button reset-button">入力クリア</button>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <h3>サマリー</h3>
+                <div class="summary-item">
+                    <p>今までの損益:</p>
+                    <p id="totalProfitLoss" class="summary-value"></p>
+                </div>
+                <div class="summary-item">
+                    <p>今までの勝率:</p>
+                    <p id="totalWinRate" class="summary-value"></p>
+                </div>
+                <div class="summary-item">
+                    <p>今月の損益:</p>
+                    <p id="monthProfitLoss" class="summary-value"></p>
+                </div>
+                <div class="summary-item">
+                    <p>今月の勝率:</p>
+                    <p id="monthWinRate" class="summary-value"></p>
+                </div>
+                <div class="button-group">
+                     <button id="clearAllData" class="action-button clear-button full-width">全ての履歴をクリア</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="tradeDetailsModal" class="modal">
         <div class="modal-content">
@@ -31,18 +110,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
-    </body>
+</body>
 </html>
