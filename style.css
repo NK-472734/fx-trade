@@ -1,156 +1,95 @@
 /* General Body and Container Styles */
 body {
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* よりモダンなフォント */
-    background: linear-gradient(135deg, #1a1a2e, #16213e); /* 深いネイビーからダークパープルのグラデーション */
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); /* 深いネイビーからダークパープルのグラデーション */
     color: #e0e0e0; /* 明るいグレーのテキスト */
     margin: 0;
-    padding: 20px;
+    padding: 0; /* 全体のパディングを0にする（containerでpaddingを設定するため） */
     display: flex;
-    justify-content: center;
-    align-items: flex-start; /* 上部に寄せる */
+    flex-direction: column; /* bodyも縦並びに */
+    align-items: center;
+    justify-content: flex-start;
     min-height: 100vh;
     box-sizing: border-box;
 }
 
-.container {
-    display: flex;
-    flex-wrap: wrap; /* 小さい画面で折り返す */
-    gap: 30px; /* 各セクション間のスペース */
-    background-color: rgba(25, 25, 40, 0.8); /* 半透明のダークな背景 */
-    border-radius: 15px; /* 角を丸く */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05); /* 奥行きと内側の輝き */
-    padding: 30px;
-    max-width: 1200px;
-    width: 100%;
-    backdrop-filter: blur(5px); /* 背景のぼかし効果 */
-}
-
-/* Header and Navigation */
-h1, h2 {
-    color: #ffffff; /* 白い見出し */
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* User Status & Auth Buttons */
+/* Auth Section is outside container to span full width */
 .auth-section {
-    background-color: rgba(30, 30, 50, 0.7); /* auth-sectionにも背景色を追加 */
+    background-color: rgba(30, 30, 50, 0.7);
     padding: 15px 25px;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     margin-bottom: 20px;
-    width: 100%; /* 横幅いっぱいに */
-    max-width: 1400px; /* containerの幅に合わせる */
+    width: 90%; /* containerと同じ幅になるように調整 */
+    max-width: 1200px; /* containerのmax-widthに合わせる */
     display: flex;
-    justify-content: flex-end; /* 右寄せ */
+    justify-content: flex-end;
     align-items: center;
-    gap: 15px; /* ボタン間の隙間 */
+    gap: 15px;
     box-sizing: border-box;
 }
 
 #userStatus {
-    margin-right: auto; /* 左に寄せる */
+    margin-right: auto;
     font-weight: bold;
     color: #ccc;
     font-size: 0.9em;
 }
 
-/* Buttons - General Styling (for all buttons) */
-button {
-    background: linear-gradient(180deg, #4a4a6a, #3a3a5a); /* ボタンのグラデーション */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 0.95em;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    outline: none;
+/* Main content container */
+.container {
+    background-color: rgba(25, 25, 40, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    width: 90%;
+    max-width: 1200px; /* 最大幅を調整 */
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex; /* ★containerをflexコンテナにする★ */
+    flex-wrap: wrap; /* 子要素の折り返しを許可 */
+    gap: 30px; /* 子要素間の隙間 */
+    justify-content: center; /* 子要素を中央寄せ */
 }
 
-button:hover:not(:disabled) {
-    background: linear-gradient(180deg, #5a5a7a, #4a4a6a);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    transform: translateY(-2px);
-}
-
-button:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-button:disabled {
-    background: #2a2a3a;
-    color: #707070;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-/* Specific Button Styles */
-.nav-button {
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 8px 15px;
-    font-size: 1.2em;
-    border-radius: 50%; /* 丸いボタン */
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: none;
-}
-
-.nav-button:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    transform: none;
-    box-shadow: none;
-}
-
-.auth-button { /* 認証ボタンのスタイル */
-    background: linear-gradient(180deg, #6a5acd, #483d8b);
-}
-.auth-button:hover {
-    background: linear-gradient(180deg, #7b68ee, #5c4baf);
-}
-.auth-button.sign-out-button {
-    background: linear-gradient(180deg, #6c757d, #5a6268);
-}
-.auth-button.sign-out-button:hover {
-    background: linear-gradient(180deg, #7a8288, #687077);
-}
-
-
-.action-button.clear-button {
-    background: linear-gradient(180deg, #d32f2f, #b71c1c);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.action-button.clear-button:hover:not(:disabled) {
-    background: linear-gradient(180deg, #e53935, #c62828);
-}
-
-.action-button.add-button {
-    background: linear-gradient(180deg, #4CAF50, #2E7D32);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.action-button.add-button:hover:not(:disabled) {
-    background: linear-gradient(180deg, #66BB6A, #388E3C);
-}
-
-/* Calendar Section */
-.calendar-section {
-    flex: 2;
-    min-width: 600px;
+/* Section common styles (calendar, input, summary, data-transfer) */
+.calendar-section,
+.trade-input-section,
+.summary-section,
+.data-transfer-section {
     background-color: rgba(30, 30, 50, 0.7);
-    border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Side panel (groups input, summary, data-transfer) */
+.side-panel {
+    flex: 1; /* 可能な限り幅を取る */
+    min-width: 350px; /* 最小幅 */
+    max-width: 450px; /* 最大幅 */
+    display: flex;
+    flex-direction: column; /* ★サイドパネル内の要素は縦並び★ */
+    gap: 30px; /* 各セクション間の隙間 */
+}
+
+
+/* Common H3 styles for sections */
+h3 {
+    color: #ffffff; /* 見出しを白に変更 */
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Calendar Section Specific Styles */
+.calendar-section {
+    flex: 2; /* カレンダーを広めにする */
+    min-width: 600px; /* 最小幅 */
+    max-width: 700px; /* 最大幅を調整 (全体の1200pxに合わせて) */
 }
 
 .calendar-header {
@@ -158,6 +97,12 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+    color: #e0e0e0;
+    font-size: 1.8em;
+    margin: 0;
 }
 
 .month-summary-container {
@@ -271,11 +216,174 @@ button:disabled {
 }
 
 
-/* Modals (Trade Details & Image Display) */
+/* Form input row common styles */
+.input-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.input-row label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #b0b0b0;
+}
+
+.input-row input,
+.input-row select {
+    width: calc(100% - 24px); /* Paddingを考慮 */
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background-color: rgba(50, 50, 70, 0.7);
+    color: #e0e0e0;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* File input specific styles */
+.input-row input[type="file"] {
+    background-color: rgba(50, 50, 70, 0.7);
+    cursor: pointer;
+    padding: 8px;
+    font-size: 0.9em;
+}
+.input-row input[type="file"]::-webkit-file-upload-button {
+    background: linear-gradient(180deg, #6c757d, #5a6268);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.input-row input[type="file"]::file-selector-button {
+    background: linear-gradient(180deg, #6c757d, #5a6268);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Input focus style */
+.input-row input:focus,
+.input-row select:focus {
+    border-color: #7b68ee;
+    box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.3);
+    outline: none;
+}
+
+/* Button group common styles */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* Action buttons common styles */
+.action-button {
+    flex-grow: 1;
+    min-width: 150px;
+    background: linear-gradient(180deg, #4a4a6a, #3a3a5a); /* Default button gradient */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+.action-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #5a5a7a, #4a4a6a);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.action-button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.action-button:disabled {
+    background: #2a2a3a;
+    color: #707070;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Specific action buttons */
+.action-button.clear-button {
+    background: linear-gradient(180deg, #d32f2f, #b71c1c); /* Red gradient */
+}
+.action-button.clear-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #e53935, #c62828);
+}
+.action-button.add-button {
+    background: linear-gradient(180deg, #4CAF50, #2E7D32); /* Green gradient */
+}
+.action-button.add-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #66BB6A, #388E3C);
+}
+
+/* Full width button */
+.full-width {
+    width: 100%;
+    min-width: unset;
+}
+
+/* Summary Section (using .summary-section as common class) */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #b0b0b0;
+}
+
+.summary-value {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #ffffff;
+}
+
+.summary-value.profit {
+    color: #81c784;
+}
+
+.summary-value.loss {
+    color: #e57373;
+}
+
+
+/* Modal (common styles for all modals) */
 .modal {
     display: none;
     position: fixed;
-    z-index: 100;
+    z-index: 1000; /* Increased z-index */
     left: 0;
     top: 0;
     width: 100%;
@@ -286,18 +394,19 @@ button:disabled {
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
+    backdrop-filter: blur(8px);
 }
 
 .modal-content {
-    background-color: #2a2a3a;
-    margin: auto;
+    background: linear-gradient(135deg, #1f1f3f, #1a1a2e);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
     width: 90%;
     max-width: 700px;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     max-height: 90vh;
     display: flex;
     flex-direction: column;
@@ -356,6 +465,19 @@ button:disabled {
     flex-grow: 1;
     overflow-y: auto;
     padding-right: 10px;
+}
+
+.trade-list-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.trade-list-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.trade-list-container::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Individual Trade Item Styles */
@@ -508,85 +630,16 @@ button:disabled {
 }
 
 
-/* Export/Import Section */
-.data-transfer-section {
-    flex: 1;
-    min-width: 300px;
-    background-color: rgba(30, 30, 50, 0.7);
-    border-radius: 12px;
-    padding: 25px;
-    margin-top: 30px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: center;
-}
-
-.data-transfer-section h3 {
-    color: #ffffff;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-}
-
-.data-transfer-section .button-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.data-transfer-section button {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    color: white;
-}
-
-.data-transfer-section button.export-button {
-    background: linear-gradient(180deg, #2196F3, #1976D2);
-}
-.data-transfer-section button.export-button:hover {
-    background: linear-gradient(180deg, #42a5f5, #2196F3);
-    transform: translateY(-2px);
-}
-
-.data-transfer-section button.import-button {
-    background: linear-gradient(180deg, #FFC107, #FFA000);
-    color: #333;
-}
-.data-transfer-section button.import-button:hover {
-    background: linear-gradient(180deg, #FFD54F, #FFC107);
-    transform: translateY(-2px);
-}
-
-.data-transfer-section input[type="file"] {
-    margin-top: 15px;
-    color: #e0e0e0;
-    border: 1px solid #555;
-    border-radius: 8px;
-    padding: 8px;
-    background-color: #333;
-    cursor: pointer;
-    width: auto;
-    max-width: 100%;
-}
-
-
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     .container {
-        flex-direction: column;
+        flex-direction: column; /* ★1024px以下で縦並びにする★ */
+        align-items: center;
         padding: 20px;
+        gap: 20px; /* 縦並びになった時のセクション間の隙間 */
     }
 
-    .auth-section {
+    .auth-section { /* レスポンシブ時の認証セクション */
         flex-wrap: wrap;
         justify-content: center;
         gap: 10px;
@@ -601,14 +654,16 @@ button:disabled {
     .calendar-section,
     .trade-input-section,
     .summary-section,
-    .data-transfer-section {
+    .data-transfer-section,
+    .side-panel {
         min-width: unset;
+        max-width: 600px; /* レスポンシブ時の最大幅を設ける */
         width: 100%;
     }
 
     .summary-section,
     .data-transfer-section {
-        margin-top: 20px;
+        margin-top: 20px; /* 縦並びになったらマージンを調整 */
     }
 }
 
@@ -622,8 +677,8 @@ button:disabled {
         gap: 20px;
     }
 
-    header h1 {
-        font-size: 2em;
+    h1, h2 {
+        font-size: 1.8em;
     }
 
     .summary-card {
@@ -635,11 +690,11 @@ button:disabled {
         font-size: 1.5em;
     }
 
-    .trade-input-form, .calendar-section, .data-transfer-section {
+    .trade-input-section, .calendar-section, .data-transfer-section {
         padding: 20px;
     }
 
-    .trade-input-form h2, .calendar-header h2, .data-transfer-section h2 {
+    .trade-input-section h3, .calendar-header h2, .data-transfer-section h3 {
         font-size: 1.5em;
     }
 
@@ -793,11 +848,11 @@ button:disabled {
         font-size: 1.2em;
     }
 
-    .trade-input-form, .calendar-section, .data-transfer-section {
+    .trade-input-section, .calendar-section, .data-transfer-section {
         padding: 15px;
     }
 
-    .trade-input-form h2, .calendar-header h2, .data-transfer-section h2 {
+    .trade-input-section h3, .calendar-header h2, .data-transfer-section h3 {
         font-size: 1.3em;
     }
 
