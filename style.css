@@ -1,80 +1,132 @@
+/* General Body and Container Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a2e; /* Dark background similar to the image */
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* よりモダンなフォント */
+    background: linear-gradient(135deg, #1a1a2e, #16213e); /* 深いネイビーからダークパープルのグラデーション */
+    color: #e0e0e0; /* 明るいグレーのテキスト */
+    margin: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: flex-start; /* 上部に寄せる */
     min-height: 100vh;
-    margin: 0;
-    padding: 20px; /* 全体にパディング */
-    box-sizing: border-box; /* パディングを含めて幅を計算 */
-    color: #e0e0e0; /* Light text color */
+    box-sizing: border-box;
 }
 
 .container {
     display: flex;
     flex-wrap: wrap; /* 小さい画面で折り返す */
-    gap: 30px; /* セクション間の隙間 */
-    justify-content: center; /* 中央寄せ */
-    max-width: 1400px; /* カレンダー全体の最大幅 */
-    width: 100%;
-}
-
-/* 認証UIのスタイル */
-.auth-section {
-    background-color: #0f0f1d;
-    padding: 15px 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    margin-bottom: 20px;
-    width: 100%; /* 横幅いっぱいに */
-    max-width: 1400px; /* containerの幅に合わせる */
-    display: flex;
-    justify-content: flex-end; /* 右寄せ */
-    align-items: center;
-    gap: 15px; /* ボタン間の隙間 */
-    box-sizing: border-box;
-}
-
-#userStatus {
-    margin-right: auto; /* 左に寄せる */
-    font-weight: bold;
-    color: #ccc;
-    font-size: 0.9em;
-}
-
-.auth-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-
-.auth-button:hover {
-    background-color: #0056b3;
-}
-
-.auth-button.sign-out-button {
-    background-color: #6c757d;
-}
-.auth-button.sign-out-button:hover {
-    background-color: #5a6268;
-}
-
-/* カレンダーセクション */
-.calendar-section {
-    background-color: #0f0f1d;
+    gap: 30px; /* 各セクション間のスペース */
+    background-color: rgba(25, 25, 40, 0.8); /* 半透明のダークな背景 */
+    border-radius: 15px; /* 角を丸く */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05); /* 奥行きと内側の輝き */
     padding: 30px;
+    max-width: 1200px;
+    width: 100%;
+    backdrop-filter: blur(5px); /* 背景のぼかし効果 */
+}
+
+/* Header and Navigation */
+h1, h2 {
+    color: #ffffff; /* 白い見出し */
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.auth-section {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-section span {
+    margin-right: 15px;
+    font-size: 0.9em;
+    color: #b0b0b0;
+}
+
+/* Buttons - General Styling (for all buttons) */
+button {
+    background: linear-gradient(180deg, #4a4a6a, #3a3a5a); /* ボタンのグラデーション */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #5a5a7a, #4a4a6a);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+button:disabled {
+    background: #2a2a3a;
+    color: #707070;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Specific Button Styles */
+.nav-button {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    font-size: 1.2em;
+    border-radius: 50%; /* 丸いボタン */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: none;
+}
+
+.nav-button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    transform: none;
+    box-shadow: none;
+}
+
+.action-button.clear-button {
+    background: linear-gradient(180deg, #d32f2f, #b71c1c); /* 赤系のグラデーション */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.action-button.clear-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #e53935, #c62828);
+}
+
+.action-button.add-button {
+    background: linear-gradient(180deg, #4CAF50, #2E7D32); /* 緑系のグラデーション */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.action-button.add-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #66BB6A, #388E3C);
+}
+
+/* Calendar Section */
+.calendar-section {
+    flex: 2; /* カレンダーを広めにする */
+    min-width: 600px; /* 最小幅 */
+    background-color: rgba(30, 30, 50, 0.7);
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    flex: 1;
-    min-width: 550px;
-    max-width: 900px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .calendar-header {
@@ -84,682 +136,477 @@ body {
     margin-bottom: 20px;
 }
 
-/* 月表示と月の損益をまとめるコンテナ */
 .month-summary-container {
-    display: flex;
-    flex-direction: column; /* 縦並び */
-    align-items: center; /* 中央寄せ */
+    text-align: center;
 }
 
-.calendar-header h2 {
-    color: #e0e0e0;
-    font-size: 2.2em;
-    margin: 0;
-}
-
-/* 月の損益表示のスタイル */
-.month-summary-value {
-    font-size: 1.3em;
-    font-weight: bold;
-    margin-top: 5px; /* 月名との間に少しスペース */
-    color: #e0e0e0; /* デフォルト色 */
-    background-color: transparent; /* 背景を透明に明示的に指定 */
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-.month-summary-value.profit {
-    color: #28a745; /* 緑色 */
-    background-color: transparent;
-}
-.month-summary-value.loss {
-    color: #dc3545; /* 赤色 */
-    background-color: transparent;
-}
-
-
-.nav-button {
-    background-color: #3f3f5a;
-    color: #e0e0e0;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-size: 1.3em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.nav-button:hover {
-    background-color: #5a5a7a;
+#monthProfitLossHeader {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #b0b0b0;
+    margin-top: 5px;
 }
 
 .calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
-    margin-bottom: 10px;
     font-weight: bold;
-    color: #999;
-    font-size: 1.2em;
-}
-
-.calendar-weekdays span {
-    padding: 10px 0;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+    gap: 8px; /* セル間の隙間 */
 }
 
 .calendar-day {
-    background-color: #2a2a47;
+    background-color: rgba(40, 40, 60, 0.6);
     border-radius: 8px;
-    padding: 20px 10px;
-    min-height: 100px;
+    padding: 15px 5px;
+    min-height: 80px; /* セルの高さ */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    font-size: 1.2em;
-    position: relative;
-    overflow: hidden;
+    justify-content: space-between;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2); /* 内側のシャドウ */
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .calendar-day:hover:not(.empty) {
-    background-color: #3a3a60;
+    background-color: rgba(50, 50, 70, 0.8);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.08);
 }
 
 .calendar-day.empty {
     background-color: transparent;
-    border: none;
     cursor: default;
+    box-shadow: none;
+    border: none;
 }
 
 .day-number {
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: bold;
+    color: #ffffff;
     margin-bottom: 5px;
-    position: absolute;
-    top: 8px;
-    left: 10px;
 }
 
 .trade-details {
-    margin-top: 25px;
-    font-size: 1em;
+    font-size: 0.85em;
     text-align: center;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.trade-details div {
-    margin-bottom: 5px;
-    line-height: 1.3;
 }
 
 .trade-profit {
-    font-weight: bold;
-    font-size: 1.1em;
+    display: block;
+    font-weight: 600;
+    margin-top: 5px;
 }
 
 .trade-count {
-    color: #bbb;
-    font-size: 0.9em;
+    display: block;
+    font-size: 0.75em;
+    color: #b0b0b0;
 }
 
-/* Profit/Loss styling (カレンダーの日付セル用) */
+/* Profit/Loss Colors for Calendar Days and Text */
 .profit {
-    background-color: #28a745;
-    color: white;
+    color: #81c784 !important; /* 明るい緑 */
 }
 
 .loss {
-    background-color: #dc3545;
-    color: white;
+    color: #e57373 !important; /* 明るい赤 */
 }
 
-.date-18 {
-    background-color: #17a2b8;
+.calendar-day.profit {
+    background-color: rgba(46, 125, 50, 0.4); /* 緑の背景 */
+    border: 1px solid rgba(129, 199, 132, 0.3);
 }
 
-.date-19 {
-    background-color: #6f42c1;
+.calendar-day.loss {
+    background-color: rgba(198, 40, 40, 0.4); /* 赤の背景 */
+    border: 1px solid rgba(229, 115, 115, 0.3);
 }
 
-/* サイドパネル (入力フォームとサマリーをまとめる) */
-.side-panel {
-    flex: 1;
-    min-width: 350px;
-    max-width: 450px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-/* 個別トレード入力セクション */
-.trade-input-section, .summary-section, .data-transfer-section { /* ★追加★ */
-    background-color: #0f0f1d;
-    padding: 30px;
+/* Input Form Section */
+.input-section {
+    flex: 1; /* 入力フォームを狭めにする */
+    min-width: 300px; /* 最小幅 */
+    background-color: rgba(30, 30, 50, 0.7);
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.trade-input-section h3, .summary-section h3, .data-transfer-section h3 { /* ★追加★ */
-    color: #007bff;
-    margin-bottom: 25px;
-    font-size: 1.8em;
+.form-group {
+    margin-bottom: 15px;
 }
 
-.input-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 18px;
-}
-
-.input-row label {
+.form-group label {
+    display: block;
     margin-bottom: 8px;
-    font-weight: bold;
-    color: #ccc;
+    font-weight: 500;
+    color: #b0b0b0;
 }
 
-.input-row input,
-.input-row select { /* inputとselectに共通スタイル */
-    width: 100%;
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: calc(100% - 20px); /* Paddingを考慮 */
     padding: 12px;
-    border: 1px solid #444;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
-    background-color: #2a2a47;
+    background-color: rgba(50, 50, 70, 0.7);
     color: #e0e0e0;
     font-size: 1em;
-    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* ファイル選択ボタンのスタイル調整 (input[type="file"]はブラウザによって見た目が違うため調整) */
-.input-row input[type="file"] {
-    background-color: #3f3f5a; /* ボタンに近い色 */
-    cursor: pointer;
-    padding: 8px; /* デフォルトのpaddingを調整 */
-    font-size: 0.9em;
-}
-.input-row input[type="file"]::-webkit-file-upload-button { /* Chrome, Safari */
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-}
-.input-row input[type="file"]::file-selector-button { /* Firefox */
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-}
-
-
-.input-row input:focus,
-.input-row select:focus {
-    border-color: #007bff;
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #7b68ee; /* フォーカス時の色 */
+    box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.3);
     outline: none;
 }
 
-.button-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.action-button {
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    flex-grow: 1;
-    min-width: 150px;
-}
-
-.add-button {
-    background-color: #007bff;
-}
-
-.add-button:hover {
-    background-color: #0056b3;
-}
-
-.reset-button {
-    background-color: #6c757d;
-}
-.reset-button:hover {
-    background-color: #5a6268;
-}
-
-.clear-button {
-    background-color: #dc3545;
-}
-
-.clear-button:hover {
-    background-color: #c82333;
-}
-.full-width {
-    width: 100%;
-    min-width: unset;
-}
-
-/* サマリーセクションのスタイル */
+/* Summary Section */
 .summary-section {
-    border-top: none;
-    padding-top: 0;
-    text-align: left;
-}
-
-.summary-section h3 {
-    text-align: center;
+    flex: 1; /* サマリーを狭めにする */
+    min-width: 300px; /* 最小幅 */
+    background-color: rgba(30, 30, 50, 0.7);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    margin-top: 30px; /* カレンダーと入力フォームの下に配置 */
 }
 
 .summary-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    padding: 8px 0;
-    border-bottom: 1px dashed #333;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
 .summary-item:last-child {
     border-bottom: none;
 }
 
-.summary-item p {
-    margin: 0;
-    font-size: 1.1em;
+.summary-item span:first-child {
+    color: #b0b0b0;
+    font-weight: 500;
 }
 
 .summary-value {
     font-weight: bold;
-    font-size: 1.2em;
-    color: white; /* デフォルトの色 (損益0の場合などに適用) */
-    background-color: transparent; /* 背景は透明 */
+    font-size: 1.1em;
 }
 
-/* 損益表示の色分け (サマリーの数値用) */
 .summary-value.profit {
-    color: #28a745; /* 緑色 */
-    background-color: transparent;
-}
-.summary-value.loss {
-    color: #dc3545; /* 赤色 */
-    background-color: transparent;
+    color: #81c784;
 }
 
-/* --- モーダル (ポップアップ) のスタイル --- */
+.summary-value.loss {
+    color: #e57373;
+}
+
+/* Modal Styles */
 .modal {
-    display: none; /* 初期状態では非表示 */
-    position: fixed; /* 画面に固定 */
-    z-index: 1000; /* 最前面に表示 */
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* 内容が多すぎる場合はスクロール可能に */
-    background-color: rgba(0,0,0,0.7); /* 半透明の黒い背景 */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
+    backdrop-filter: blur(8px); /* モーダルの背景をぼかす */
 }
 
 .modal-content {
-    background-color: #0f0f1d;
-    margin: auto;
+    background: linear-gradient(135deg, #1f1f3f, #1a1a2e); /* モーダル背景のグラデーション */
     padding: 30px;
     border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    max-width: 700px;
     width: 90%;
-    max-width: 800px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     position: relative;
     color: #e0e0e0;
-    animation: fadeIn 0.3s ease-out; /* フェードインアニメーション */
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .close-button {
     color: #aaa;
+    font-size: 30px;
+    font-weight: bold;
     position: absolute;
     top: 15px;
     right: 25px;
-    font-size: 35px;
-    font-weight: bold;
     cursor: pointer;
-    transition: color 0.3s;
+    background: none; /* ボタンのデフォルトスタイルをリセット */
+    border: none;
+    padding: 0;
+    box-shadow: none;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #eee;
+    color: #fff;
     text-decoration: none;
+    cursor: pointer;
 }
 
-.modal-content h3 {
-    color: #007bff;
-    margin-top: 0;
+#modalDateHeader {
+    font-size: 1.8em;
+    color: #ffffff;
     margin-bottom: 25px;
-    font-size: 2em;
-    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 15px;
 }
 
-.trade-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* トレード間の隙間 */
+#tradeList {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px; /* スクロールバーのためのスペース */
 }
 
-/* --- 個別トレードアイテムのスタイル --- */
+#tradeList::-webkit-scrollbar {
+    width: 8px;
+}
+
+#tradeList::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+#tradeList::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .trade-item {
-    background-color: #2a2a47;
-    padding: 15px 20px;
-    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 15px; /* 各要素間の隙間 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    flex-wrap: wrap; /* 小さい画面で折り返す */
+    background-color: rgba(40, 40, 60, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.trade-item .type-indicator {
-    padding: 8px 15px;
-    border-radius: 8px;
+.type-indicator {
+    padding: 6px 12px;
+    border-radius: 6px;
     font-weight: bold;
-    color: white;
-    font-size: 1.1em;
-    min-width: 60px; /* ボタンの最小幅 */
+    font-size: 0.85em;
+    margin-right: 15px;
+    min-width: 50px;
     text-align: center;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .type-indicator.buy {
-    background-color: #28a745; /* 緑 */
+    background-color: #28a745; /* Buyは緑 */
+    color: #fff;
 }
 
 .type-indicator.sell {
-    background-color: #dc3545; /* 赤 */
+    background-color: #dc3545; /* Sellは赤 */
+    color: #fff;
 }
 
-.trade-item .pair-info-wrapper { /* 銘柄情報と画像ボタンをまとめる */
+.pair-info-wrapper {
     display: flex;
-    align-items: center;
-    gap: 10px; /* 銘柄とボタンの間の隙間 */
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 20px;
 }
 
-.trade-item .pair-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.pair-info {
     font-weight: bold;
     font-size: 1.1em;
+    color: #ffffff;
+    margin-bottom: 5px;
 }
 
-.trade-item .pair-info img {
-    width: 28px; /* イメージサイズ */
-    height: 28px;
-    border-radius: 50%; /* 丸い形 */
-    object-fit: cover;
-}
-
-/* 時間表示のスタイル */
-.trade-item .trade-datetime {
-    margin-left: auto; /* 時間を右端に寄せる */
-    font-size: 0.95em;
-    color: #bbb;
-    white-space: nowrap; /* 日付と時間が改行されないように */
-}
-
-/* 画像表示ボタンのスタイル */
-.trade-item .image-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
+.image-button {
+    background: linear-gradient(180deg, #6a5acd, #483d8b); /* 青紫系のグラデーション */
     padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.image-button:hover:not(:disabled) {
+    background: linear-gradient(180deg, #7b68ee, #5c4baf);
+}
+
+.trade-datetime {
     font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-.trade-item .image-button:hover {
-    background-color: #0056b3;
-}
-.trade-item .image-button:disabled {
-    background-color: #4a4a4a;
-    cursor: not-allowed;
-    opacity: 0.7;
+    color: #b0b0b0;
+    margin-right: 20px;
 }
 
-/* 個別トレードの損益表示の画像スタイル (今回は画像専用モーダルを使うので、ここでの直接表示は不要) */
-.trade-item .trade-image {
-    max-width: 100%;
-    height: auto;
-    margin-top: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.trade-item .profit-display {
-    padding: 8px 15px;
-    border-radius: 8px;
+.profit-display {
     font-weight: bold;
-    font-size: 1.15em;
+    font-size: 1.2em;
+    margin-left: auto; /* 右端に寄せる */
+    text-align: right;
     min-width: 100px;
-    text-align: center;
-    margin-left: auto; /* 損益を右端に寄せる */
 }
-
 
 .profit-display.positive {
-    background-color: rgba(40, 167, 69, 0.2);
-    color: #28a745;
+    color: #81c784;
 }
 
 .profit-display.negative {
-    background-color: rgba(220, 53, 69, 0.2);
-    color: #dc3545;
+    color: #e57373;
 }
 
-/* 画像専用モーダルと表示画像のスタイル */
-.image-modal-content {
-    padding: 20px;
+/* Image Display Modal */
+#imageDisplayModal .modal-content {
     max-width: 90%;
-    background-color: transparent;
-    box-shadow: none;
+    max-height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
-.displayed-trade-image {
+
+#displayedImage {
     max-width: 100%;
-    max-height: 80vh;
-    display: block;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    max-height: 100%;
+    object-fit: contain; /* 画像全体を表示 */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
+/* Data Import/Export Section */
+.data-io-section {
+    flex: 1;
+    min-width: 300px;
+    background-color: rgba(30, 30, 50, 0.7);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    margin-top: 30px;
+}
 
-/* レスポンシブ対応の調整 */
-@media (max-width: 900px) {
+.data-io-section button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.data-io-section input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background-color: rgba(50, 50, 70, 0.7);
+    color: #e0e0e0;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
     .container {
         flex-direction: column;
-        align-items: center;
-        padding: 15px;
-    }
-
-    .calendar-section, .side-panel {
-        width: 100%;
-        max-width: 550px;
-        min-width: unset;
-    }
-
-    .calendar-section {
-        padding: 25px;
-    }
-
-    .calendar-header h2 {
-        font-size: 1.8em;
-    }
-    .month-summary-value {
-        font-size: 1.1em;
-    }
-
-    .nav-button {
-        padding: 8px 12px;
-        font-size: 1em;
-    }
-
-    .calendar-day {
-        min-height: 80px;
-        font-size: 1em;
-        padding: 10px 3px;
-    }
-    .day-number {
-        font-size: 1.1em;
-        top: 3px;
-        left: 5px;
-    }
-    .trade-details {
-        margin-top: 15px;
-        font-size: 0.8em;
-    }
-    .trade-profit {
-        font-size: 1em;
-    }
-
-    .trade-input-section, .summary-section, .data-transfer-section { /* ★追加★ */
-        padding: 25px;
-    }
-
-    .trade-input-section h3, .summary-section h3, .data-transfer-section h3 { /* ★追加★ */
-        font-size: 1.5em;
-    }
-    .action-button {
-        padding: 10px 20px;
-        font-size: 1em;
-        min-width: unset;
-        width: 100%;
-        margin: 5px 0;
-    }
-    .button-group {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .summary-item p {
-        font-size: 1em;
-    }
-    .summary-value {
-        font-size: 1.1em;
-    }
-
-    /* モーダル */
-    .modal-content {
-        max-width: 95%;
         padding: 20px;
     }
-    .modal-content h3 {
-        font-size: 1.8em;
-    }
-    .close-button {
-        font-size: 30px;
-        top: 10px;
-        right: 15px;
-    }
-    .trade-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 12px 15px;
-    }
-    .trade-item .type-indicator,
-    .trade-item .pair-info-wrapper,
-    .trade-item .trade-datetime,
-    .trade-item .profit-display {
-        width: 100%;
-        min-width: unset;
-        margin-left: 0;
-        text-align: left;
-    }
-    .trade-item .pair-info-wrapper {
-        justify-content: flex-start;
-    }
-    .trade-item .trade-datetime {
-        text-align: right;
-    }
-    .trade-item .type-indicator {
-        text-align: center;
-    }
-    .trade-item .image-button {
-        flex-grow: 0;
-        min-width: unset;
-        text-align: center;
-        margin-left: 0;
+
+    .calendar-section,
+    .input-section,
+    .summary-section,
+    .data-io-section {
+        min-width: unset; /* 最小幅を解除 */
+        width: 100%; /* 全幅にする */
     }
 
+    .summary-section,
+    .data-io-section {
+        margin-top: 20px; /* 上部の余白を調整 */
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     body {
-        padding: 10px;
-    }
-    .calendar-section, .side-panel {
         padding: 15px;
     }
-    .calendar-header h2 {
-        font-size: 1.5em;
+
+    .container {
+        padding: 15px;
+        gap: 20px;
     }
-    .month-summary-value {
-        font-size: 1em;
+
+    h1, h2 {
+        font-size: 1.8em;
     }
-    .nav-button {
-        padding: 6px 10px;
+
+    button {
+        padding: 8px 15px;
         font-size: 0.9em;
     }
+
     .calendar-day {
         min-height: 60px;
-        font-size: 0.9em;
-        padding: 8px 2px;
+        padding: 10px 3px;
     }
+
     .day-number {
         font-size: 1em;
     }
+
     .trade-details {
-        margin-top: 10px;
         font-size: 0.75em;
     }
-    .input-row input, .input-row select {
-        font-size: 0.9em;
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    #modalDateHeader {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+
+    .trade-item {
+        flex-wrap: wrap;
         padding: 10px;
     }
-    .trade-input-section h3 {
-        font-size: 1.3em;
+
+    .type-indicator {
+        margin-right: 10px;
+        margin-bottom: 5px;
     }
-    .summary-section h3 {
-        font-size: 1.3em;
+
+    .pair-info-wrapper {
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+
+    .trade-datetime {
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+
+    .profit-display {
+        margin-left: unset; /* 自動マージンを解除 */
+        width: 100%;
+        text-align: left;
+        margin-top: 5px;
     }
 }
